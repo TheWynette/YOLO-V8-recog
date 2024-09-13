@@ -39,7 +39,7 @@ Installation
    ```
    Use the `--input` flag to specify the path to the input image and the `--output` flag to specify the path for saving the output image.
 
-Configuration
+## Configuration
 Remote Repository Setup
 1. Check your remote repository URL:
    ```bash
@@ -54,7 +54,7 @@ Remote Repository Setup
    git push -u origin main
    ```
 
-Handling Branches
+## Handling Branches
 If you encounter issues with branches or need to set up a new branch:
 1. Create and switch to a new branch:
    ```bash
@@ -65,16 +65,16 @@ If you encounter issues with branches or need to set up a new branch:
    git push -u origin main
    ```
 
-Examples
+## Examples
 Here are some examples of what the digit recognition output looks like:
 
-Contributing
+## Contributing
 If you would like to contribute to this project, please fork the repository and submit a pull request with your changes. Make sure to follow the contribution guidelines in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
-License
+## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Acknowledgements
+## Acknowledgements
 Special thanks to the YOLO community for their contributions to the object detection field.
 Thanks to the great myself Ⅵ for my assistance with integrating YOLO-V8 into this project.
 
