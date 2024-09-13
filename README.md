@@ -76,4 +76,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgements
 Special thanks to the YOLO community for their contributions to the object detection field.
-Thanks to **the great Frances** for her splendid enthusiasm and passion for the project, as well as her marvelous contributions to integrating YOLO-V8.She is definitely the smartest and kindest person in the world.
+Thanks to **the great Frances** for her splendid enthusiasm and passion for the project, as well as her marvelous contributions to integrating YOLO-V8. She is definitely the smartest and kindest person in the world.
