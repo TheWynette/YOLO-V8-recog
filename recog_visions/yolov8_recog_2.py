@@ -1,0 +1,145 @@
+# 添加帧内查重
+# 无总体全局数据处理
+
+import cv2
+import matplotlib.pyplot as plt
+from ultralytics import YOLO
+import time
+
+model_path = r"C:\Users\marsh\Desktop\recognition\yolo\best.pt"
+model = YOLO(model_path)
+
+cap = cv2.VideoCapture(0)  #  0 ：first camera
+
+
+def calculate_iou(x1, y1, x2, y2, x1_e, y1_e, x2_e, y2_e):
+
+    xi1 = max(x1, x1_e)
+    yi1 = max(y1, y1_e)
+    xi2 = min(x2, x2_e)
+    yi2 = min(y2, y2_e)
+    inter_area = max(0, xi2 - xi1) * max(0, yi2 - yi1)
+
+    box1_area = (x2 - x1) * (y2 - y1)
+    box2_area = (x2_e - x1_e) * (y2_e - y1_e)
+    union_area = box1_area + box2_area - inter_area
+
+    iou = inter_area / union_area
+    return iou
+
+
+def detect_save(frame, current_time):
+    global last_detection_time
+    if current_time - last_detection_time < detection_interval:
+        return
+        # met ,return none
+    last_detection_time = current_time
+
+
+def duplicate(detections, new_detection, iou_threshold):
+    for existing in detections:
+        print(f"Checking existing detection: {existing}")
+        iou = calculate_iou(
+            existing["x1"],
+            existing["y1"],
+            existing["x2"],
+            existing["y2"],
+            new_detection["x1"],
+            new_detection["y1"],
+            new_detection["x2"],
+            new_detection["y2"],
+        )  # important to check what is inside existiong
+        if iou > iou_threshold and existing["digit"] == new_detection["digit"]:
+            return True
+        else:
+            return False
+
+
+while cap.isOpened():
+    ret, frame = cap.read()
+    results = model(frame)
+    detection_interval = 3
+    current_time = time.time()
+    last_detection_time = 0
+    detections = []
+
+    frame_detections = []  # need to put outside
+    # 每帧内处理
+    for result in results:
+        boxes = result.boxes.xyxy
+        confs = result.boxes.conf
+        classes = result.boxes.cls
+
+        for box, conf, cls in zip(boxes, confs, classes):
+            if conf > 0.7:
+                x1, y1, x2, y2 = map(int, box)
+                label = f"{model.names[int(cls)]:{conf:.2f}}"
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                cv2.putText(
+                    frame,
+                    label,
+                    (x1, y1 - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.5,
+                    (0, 255, 0),
+                    2,
+                )
+                label = int(f"{model.names[int(cls)]}")
+
+                detection = {
+                    "digit": label,
+                    "x1": x1,
+                    "y1": y1,
+                    "x2": x2,
+                    "y2": y2,
+                    "confidence": conf,
+                }
+
+                if not duplicate(
+                    frame_detections, detection, iou_threshold=0.5
+                ):  # problem1~~~
+                    frame_detections.append(detection)
+
+                if frame_detections:
+                    x1_0, x2_0 = 0, 0
+                    label1, label2 = None, None
+                    for idx, detection in enumerate(frame_detections):
+                        # 抽出迭代值
+                        if idx == 0:
+                            x1_0 = detection["x1"]
+                            label1 = detection["digit"]
+                        elif idx == 1:
+                            x2_0 = detection["x1"]
+                            label2 = detection["digit"]
+
+                    if x1_0 > x2_0 and x2_0 != 0:
+                        a = label1
+                        b = label2
+                        re = 10 * b + a
+                    elif x1_0 < x2_0 and x2_0 != 0:
+                        a = label2
+                        b = label1
+                        re = 10 * b + a
+                    else:
+                        re = None
+                        a = b = None
+                    print(
+                        f"The tens place is {b},the unit place is {a},result_final:{re}"
+                    )
+                else:
+                    print("No digits detected in this frame.")
+
+    # 总体数据处理
+    # detect_save(frame, current_time)
+
+    frame_resized = cv2.resize(frame, (640, 480))
+
+    cv2.imshow("YOLOv8 Detection", frame)
+
+    # 'q' exit
+    if cv2.waitKey(333) & 0xFF == ord("q"):
+        break
+
+
+cap.release()
+cv2.destroyAllWindows()

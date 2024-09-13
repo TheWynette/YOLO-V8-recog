@@ -1,0 +1,12 @@
+names:
+- board
+nc: 1
+roboflow:
+  license: CC BY 4.0
+  project: recog0801
+  url: https://universe.roboflow.com/new-workspace-s4wma/recog0801/dataset/1
+  version: 1
+  workspace: new-workspace-s4wma
+test: ../test/images
+train: Recog0801-1/train/images
+val: Recog0801-1/valid/images
