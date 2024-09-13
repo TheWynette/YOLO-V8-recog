@@ -4,19 +4,19 @@ YOLO-V8 Real-Time Digit Recognition is a project aimed at recognizing digits on 
 
 Table of Contents
 
-[Introduction](#introduction)
-[Installation](#installation)
-[Usage](#usage)
-[Configuration](#configuration)
-[Examples](#examples)
-[Contributing](#contributing)
-[License](#license)
-[Acknowledgements](#acknowledgements)
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Examples](#examples)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgements](#acknowledgements)
 
-Introduction
+## Introduction
 This project uses the YOLO-V8 model for automatic digit recognition from images of semicircular colored paper. The digits can be recognized even when the paper is moving, which is ideal for real-time applications like identifying addresses during flight.
 
-Installation
+## Installation
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/TheWynette/YOLO-V8-recog.git
