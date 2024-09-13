@@ -41,11 +41,11 @@ Installation
 
 ## Configuration
 Remote Repository Setup
-1. Check your remote repository URL:
+1. **Check your remote repository URL**:
    ```bash
    git remote -v
    ```
-2. Set or update the remote URL:
+2. **Set or update the remote URL**:
    ```bash
    git remote set-url origin git@github.com:TheWynette/YOLO-V8-recog.git
    ```
@@ -56,11 +56,11 @@ Remote Repository Setup
 
 ## Handling Branches
 If you encounter issues with branches or need to set up a new branch:
-1. Create and switch to a new branch:
+1. **Create and switch to a new branch**:
    ```bash
    git checkout -b main
    ```
-2. Push the branch to the remote repository:
+2. **Push the branch to the remote repository**:
    ```bash
    git push -u origin main
    ```
@@ -76,5 +76,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgements
 Special thanks to the YOLO community for their contributions to the object detection field.
-Thanks to the great myself Ⅵ for my assistance with integrating YOLO-V8 into this project.
+Thanks to **the great myself** for my assistance with integrating YOLO-V8 into this project.
 
