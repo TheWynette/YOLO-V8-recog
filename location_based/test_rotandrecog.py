@@ -7,7 +7,6 @@ import torch
 import sys
 from park import *
 
-
 last_detection_time = 0
 detections = []
 detections = []
@@ -46,7 +45,6 @@ while cap.isOpened():
             boxes = r.boxes.xyxy.cpu().numpy()  # 获取目标框的坐标
             ids = r.boxes.id.cpu().numpy() if r.boxes.id is not None else None
 
-            # 那个公式要像素坐标还是归一化的？？？？？？？
             if boxes is not None and ids is not None:
                 for box, id in zip(boxes, ids):
                     x1, y1, x2, y2 = map(int, box)  # 转换为整数像素坐标
@@ -58,6 +56,7 @@ while cap.isOpened():
                     y2 = y2 + 30
                     # 裁剪目标区域
                     cropped_img = frame[y1:y2, x1:x2]
+                    # cropped_img 是天井区域从原图中截出来的图片
 
                     scale_factor = 2
                     en_img = cv2.resize(
@@ -66,15 +65,16 @@ while cap.isOpened():
                         fx=scale_factor,
                         fy=scale_factor,
                         interpolation=cv2.INTER_LINEAR,
-                    )
+                    ) #en_img 是天井区域放大的图片
 
                     c = rot_new(en_img)
+                    #c是旋转至正向的天井图片
 
                     c1 = convert(c)
+                    #c1是转换到正确格式的图像
 
                     if cv2.imwrite("c1.jpg", c1):
                         print("C1 saved successfully.")
-
                     else:
                         print("Failed to save image.")
 
@@ -86,8 +86,9 @@ while cap.isOpened():
                     # 单个图片里检测结果
                     re, text = detect_save(results_num)
                     detections_final.append(re)
+                    #re是每次识别出的数字，detection_final是一个存放识别数字的list
 
-    if len(detections_final) >= 1:
+    if len(detections_final) >= 1:#当出现识别结果，在屏幕上显示图像、把结果和范围框打在图像上，最后保存图像
         font = cv2.FONT_HERSHEY_SIMPLEX
         font_scale = 3
         color = (0, 0, 0)
